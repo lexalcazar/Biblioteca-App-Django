@@ -1,13 +1,17 @@
 
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from prestamos.api_views import Libros_api_view, vista_por_titulo
+from prestamos.api_views import CrearUsuarioAPIView, Libros_api_view, Usuarios_api_view, endpoint_check_dni, vista_por_titulo
 
 # Crea el router y registra los ViewSets
 router = DefaultRouter()
 router.register(r'libros', Libros_api_view)   # Genera /api/libros/
+router.register(r'usuarios', Usuarios_api_view)   # Genera /api/usuarios/
+
 
 urlpatterns = [
     path('', include(router.urls)),
     path('libros/titulo/<str:titulo>/', vista_por_titulo),
+    path('usuario/check_dni/', endpoint_check_dni),
+    path('usuario/crear/', CrearUsuarioAPIView.as_view()),
 ]
