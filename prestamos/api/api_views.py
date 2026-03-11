@@ -1,17 +1,48 @@
 
 import rest_framework
 from rest_framework import viewsets
-from prestamos.models import Libro, Usuario
-from prestamos.api.serializers import CrearUsuarioSerializer, DetalleUsuarioSerializer, LibroSerializer, UsuarioSerializer
+from prestamos.models import Autor, Libro, Prestamo, Usuario
+from prestamos.api.serializers import AutorSerializer, CrearUsuarioSerializer, DetalleLibroSerializer, DetalleUsuarioSerializer, LibroSerializer, PrestamoSerializer, UsuarioSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .dni_utils import check_dni
 from rest_framework import generics
 
+#-------------------------------------------------
+# Vista para ver autores
+#-----------------------------------------------------
+
+class Autores_api_view(viewsets.ModelViewSet):
+    queryset = Autor.objects.all()
+    serializer_class = AutorSerializer
+
+#----------------------------------------------------
+# Vista para ver los prestamos
+#-----------------------------------------------------
+
+class Prestamos_api_view(viewsets.ModelViewSet):
+    queryset = Prestamo.objects.all()
+    serializer_class = PrestamoSerializer
+
+#-----------------------------------------------------
+# Vista para ver los libros
+#-----------------------------------------------------
+
+
 class Libros_api_view(viewsets.ModelViewSet):
+    
     queryset = Libro.objects.all()
-    serializer_class = LibroSerializer
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return DetalleLibroSerializer
+        return LibroSerializer
+    
+
+
+#---------------------------------------------
+# vista para buscar un libro por su titulo
+#---------------------------------------------
 
 
 @api_view(['GET'])
@@ -22,19 +53,32 @@ def vista_por_titulo(request, titulo):
         return Response(serializer.data)
     return Response({'error': 'Libro no encontrado'}, status=404)
 
+
+#---------------------------------------------
 # vista para ver los usuarios
+#---------------------------------------------
+
 class Usuarios_api_view(viewsets.ModelViewSet):
     queryset = Usuario.objects.all()
     def get_serializer_class(self):
         if self.action == 'retrieve':
             return DetalleUsuarioSerializer
         return UsuarioSerializer
+    
+#---------------------------------------------------    
 # vista para crear un usuario
+#-------------------------------------------------------
+
+
 class CrearUsuarioAPIView(generics.CreateAPIView):
     queryset = Usuario.objects.all()
     serializer_class = CrearUsuarioSerializer
 
+
+#-----------------------------------------------------------------
 # endpoint para validar el dni
+#-------------------------------------------------------------------
+
 
 @api_view(['POST'])
 def endpoint_check_dni(request):

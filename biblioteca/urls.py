@@ -22,6 +22,6 @@ urlpatterns = [
     # Include las urls de la aplicacion prestamos
     path('prestamos/', include('prestamos.urls')),
     # Include las urls de la API REST
-    path('api/', include('prestamos.urls_api')),
+    path('api/', include('prestamos.api.urls_api')),
 
 ]
