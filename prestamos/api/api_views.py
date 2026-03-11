@@ -2,7 +2,7 @@
 import rest_framework
 from rest_framework import viewsets
 from prestamos.models import Libro, Usuario
-from prestamos.serializers import CrearUsuarioSerializer, DetalleUsuarioSerializer, LibroSerializer, UsuarioSerializer
+from prestamos.api.serializers import CrearUsuarioSerializer, DetalleUsuarioSerializer, LibroSerializer, UsuarioSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status

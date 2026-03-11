@@ -1,7 +1,7 @@
 
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from prestamos.api_views import CrearUsuarioAPIView, Libros_api_view, Usuarios_api_view, endpoint_check_dni, vista_por_titulo
+from prestamos.api.api_views import CrearUsuarioAPIView, Libros_api_view, Usuarios_api_view, endpoint_check_dni, vista_por_titulo
 
 # Crea el router y registra los ViewSets
 router = DefaultRouter()

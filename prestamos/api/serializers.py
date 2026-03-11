@@ -1,10 +1,10 @@
 
 from rest_framework import serializers
 
-from prestamos.dni_utils import check_dni
+from prestamos.api.dni_utils import check_dni
 
 # importamos el modelo usuario para poder usarlo en el serializer
-from .models import Usuario, Libro, Prestamo, Autor
+from ..models import Usuario, Libro, Prestamo, Autor
 
 
 
@@ -67,12 +67,12 @@ class CrearUsuarioSerializer(serializers.ModelSerializer):
 # serializer para validar el dni en el endpoint de check_dni
 class DNIValidatorSerializer(serializers.Serializer):
 
-    documento = serializers.CharField()
+    documento = serializers.CharField() # Campo para recibir el documento a validar
 
-    def validate_documento(self, value):
+    def validate_documento(self, value): # Método de validación para el campo documento
         resultado = check_dni(value)
 
-        if not resultado["valido"]:
+        if not resultado["valido"]: # Si el DNI no es válido, lanzamos una excepción con el error correspondiente
             raise serializers.ValidationError(resultado["error"])
 
         return value
